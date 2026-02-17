@@ -1,605 +1,331 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hitung Poin By Isall</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
 <style>
-/* ===================== RESET ===================== */
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{width:100%;min-height:100vh;overflow-x:hidden;}
 body{
-  font-family:'Barlow Condensed',Arial,sans-serif;
-  background:#0A0A0A;color:#fff;
-}
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(ellipse at 10% 10%,rgba(204,0,0,0.1),transparent 55%),
-    radial-gradient(ellipse at 90% 90%,rgba(150,0,0,0.08),transparent 55%);
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
+  color:white;
 }
 
-/* ===================== HALAMAN ===================== */
-/* Semua hidden by default - diatur via JS style langsung */
-#pgLogin,#pgTeam,#pgTable{
-  display:none;width:100%;min-height:100vh;
-  position:relative;z-index:1;
+.page{
+  display:none;
+  min-height:100vh;
+  padding:20px;
 }
 
-/* ===================== LOGIN ===================== */
-#pgLogin{
+.active{
+  display:flex;
   justify-content:center;
   align-items:center;
+  flex-direction:column;
 }
-.lbox{
-  width:88%;max-width:340px;
-  background:#181818;
-  border:1px solid rgba(204,0,0,0.45);
-  border-radius:18px;padding:32px 24px;
+
+/* LOGIN */
+.loginBox{
+  width:90%;
+  max-width:350px;
+  background:#1e1e1e;
+  padding:30px;
+  border-radius:20px;
   text-align:center;
-  box-shadow:0 0 60px rgba(204,0,0,0.2),0 0 120px rgba(204,0,0,0.06);
-  position:relative;overflow:hidden;
-}
-.lbox::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent,#FF3333,#FFD700,#FF3333,transparent);
-}
-.lff{font-size:12px;letter-spacing:5px;color:#FF3333;margin-bottom:8px;}
-.ltitle{font-size:32px;font-weight:900;letter-spacing:4px;line-height:1;}
-.lby{font-size:12px;letter-spacing:4px;color:#666;margin:5px 0 20px;}
-.lline{width:50px;height:2px;background:linear-gradient(90deg,transparent,#CC0000,transparent);margin:0 auto 22px;}
-.lver{margin-top:14px;font-size:10px;color:#2a2a2a;letter-spacing:1px;}
-
-/* ===================== INPUT ===================== */
-.finp{
-  display:block;width:100%;padding:13px 14px;margin-bottom:12px;
-  background:#0f0f0f;border:1px solid rgba(204,0,0,0.35);
-  border-radius:10px;color:#fff;
-  font-family:'Barlow Condensed',Arial,sans-serif;
-  font-size:17px;font-weight:600;text-align:center;
-  outline:none;-webkit-appearance:none;
-  transition:border-color .2s;
-}
-.finp:focus{border-color:#FF3333;}
-.finp::placeholder{color:#444;font-weight:400;}
-
-/* ===================== TOMBOL ===================== */
-.fbtn{
-  display:block;width:100%;padding:13px;border:none;
-  border-radius:10px;cursor:pointer;
-  font-family:'Barlow Condensed',Arial,sans-serif;
-  font-size:14px;font-weight:700;letter-spacing:3px;
-  text-transform:uppercase;margin-bottom:9px;
-  transition:opacity .15s;
-}
-.fbtn:active{opacity:.75;}
-.bred{
-  background:linear-gradient(135deg,#CC0000,#880000);
-  color:#fff;box-shadow:0 4px 18px rgba(204,0,0,0.3);
-}
-.bghost{
-  background:transparent;color:#666;
-  border:1px solid rgba(204,0,0,0.3);
+  box-shadow:0 0 40px rgba(255,0,0,0.5);
 }
 
-/* ===================== HEADER BAR ===================== */
-.hbar{
+.loginBox h2{
+  color:#ff2e2e;
+  margin-bottom:25px;
+}
+
+.content{
   width:100%;
-  background:linear-gradient(180deg,#1a0000,#0A0A0A);
-  border-bottom:2px solid rgba(204,0,0,0.5);
-  padding:14px 16px;text-align:center;
-}
-.hbar h2{font-size:22px;font-weight:900;letter-spacing:3px;}
-.hbar p{font-size:10px;color:#666;letter-spacing:2px;margin-top:3px;}
-
-/* ===================== TEAM PAGE ===================== */
-.team-wrap{
-  width:100%;max-width:460px;
-  margin:0 auto;
-  padding:14px 14px 0;
-}
-.cbar{
-  display:flex;align-items:center;justify-content:space-between;
-  background:#181818;border:1px solid rgba(204,0,0,0.35);
-  border-radius:10px;padding:10px 14px;margin-bottom:12px;
-}
-.cbar-lbl{font-size:11px;letter-spacing:2px;color:#666;text-transform:uppercase;}
-.cbar-val{font-size:22px;font-weight:700;color:#FF3333;}
-
-.slot{
-  display:flex;align-items:center;gap:8px;
-  background:#181818;border:1px solid rgba(204,0,0,0.2);
-  border-radius:10px;padding:9px 10px;margin-bottom:7px;
-  transition:border-color .2s;
-}
-.slot.filled{border-color:rgba(204,0,0,0.55);}
-.snum{font-size:17px;font-weight:700;color:#FF3333;min-width:24px;text-align:center;}
-.sinp{
-  flex:1;padding:8px 10px;background:#0f0f0f;
-  border:1px solid rgba(204,0,0,0.2);border-radius:8px;
-  color:#fff;font-family:'Barlow Condensed',Arial,sans-serif;
-  font-size:15px;font-weight:600;outline:none;
-  transition:border-color .2s;
-}
-.sinp:focus{border-color:#FF3333;}
-.sinp::placeholder{color:#444;font-weight:400;}
-.sdel{
-  width:30px;height:30px;background:#1a0000;
-  border:1px solid rgba(204,0,0,0.3);border-radius:7px;
-  color:#FF3333;font-size:15px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.sdel:active{background:#CC0000;color:#fff;}
-
-.addbtn{
-  width:100%;padding:11px;background:#0f0f0f;
-  border:1px dashed rgba(204,0,0,0.4);border-radius:10px;
-  color:#666;font-family:'Barlow Condensed',Arial,sans-serif;
-  font-size:13px;letter-spacing:2px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:8px;
-}
-.addbtn:active{border-color:#FF3333;color:#fff;}
-
-.sfoot{
-  position:sticky;bottom:0;
-  background:linear-gradient(transparent,#0A0A0A 38%);
-  padding:16px 14px 22px;
-  width:100%;max-width:460px;
-  margin:0 auto;
+  max-width:1200px;
+  text-align:center;
 }
 
-/* ===================== TABLE PAGE ===================== */
-.thead-bar{
+input,button{
   width:100%;
-  background:linear-gradient(180deg,#1a0000,#0A0A0A);
-  border-bottom:2px solid rgba(204,0,0,0.5);
-  padding:12px 14px;
-  display:flex;align-items:center;justify-content:space-between;
+  padding:10px;
+  margin:8px 0;
+  border:none;
+  border-radius:8px;
 }
-.thead-bar h2{font-size:20px;font-weight:900;letter-spacing:3px;}
-.thead-bar p{font-size:10px;color:#666;letter-spacing:2px;margin-top:2px;}
-.kbadge{text-align:right;}
-.kbadge span{font-size:10px;color:#666;letter-spacing:1px;display:block;}
-.kbadge b{font-size:28px;font-weight:900;color:#FF3333;line-height:1;}
 
-.actbar{
-  display:flex;gap:7px;padding:9px 12px;
-  background:#111;border-bottom:1px solid rgba(204,0,0,0.15);
-  overflow-x:auto;
+input{
+  background:#2a2a2a;
+  color:white;
+  text-align:center;
 }
-.actbar::-webkit-scrollbar{display:none;}
-.abtn{
-  flex-shrink:0;padding:8px 14px;border:none;border-radius:8px;
-  font-family:'Barlow Condensed',Arial,sans-serif;
-  font-size:12px;font-weight:700;letter-spacing:1px;
-  cursor:pointer;text-transform:uppercase;
-  transition:opacity .15s;
-}
-.abtn:active{opacity:.6;}
-.ag{background:rgba(255,215,0,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.3);}
-.ab{background:rgba(0,150,255,0.1);color:#55aaff;border:1px solid rgba(0,150,255,0.3);}
-.ar{background:rgba(204,0,0,0.15);color:#FF3333;border:1px solid rgba(204,0,0,0.35);}
-.aw{background:rgba(255,255,255,0.05);color:#888;border:1px solid rgba(255,255,255,0.1);}
 
-/* PODIUM */
-.podwrap{
-  display:flex;gap:7px;align-items:flex-end;
-  padding:12px 12px 0;
-  width:100%;max-width:460px;
-  margin:0 auto;
+button{
+  background:#ff2e2e;
+  color:white;
+  font-weight:bold;
 }
-.pod{flex:1;border-radius:10px 10px 0 0;padding:10px 5px;text-align:center;overflow:hidden;}
-.pod1{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.4);border-bottom:none;min-height:88px;}
-.pod2{background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.3);border-bottom:none;min-height:72px;}
-.pod3{background:rgba(205,127,50,0.08);border:1px solid rgba(205,127,50,0.3);border-bottom:none;min-height:60px;}
-.pico{font-size:20px;display:block;margin-bottom:2px;}
-.pnm{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.psc{font-size:20px;font-weight:900;}
-.pod1 .psc{color:#FFD700;}
-.pod2 .psc{color:#C0C0C0;}
-.pod3 .psc{color:#CD7F32;}
+
+button:hover{
+  background:#cc0000;
+}
 
 /* TABLE */
-.tscroll{
-  overflow-x:auto;padding:0 10px 40px;
-  width:100%;max-width:460px;
-  margin:0 auto;
+.tableWrap{
+  overflow:auto;
+  background:white;
+  border-radius:10px;
+  padding:10px;
+  margin-top:15px;
 }
-.tscroll::-webkit-scrollbar{height:3px;}
-.tscroll::-webkit-scrollbar-thumb{background:#CC0000;border-radius:2px;}
 
-table{border-collapse:collapse;width:100%;min-width:680px;font-size:13px;}
-thead tr{background:#CC0000;}
+table{
+  border-collapse:collapse;
+  min-width:1100px;
+  width:100%;
+  table-layout:fixed;
+  color:black;
+}
+
+th,td{
+  border:1px solid #ccc;
+  padding:8px;
+  text-align:center;
+  vertical-align:middle;
+  word-wrap:break-word;
+}
+
 th{
-  padding:9px 7px;text-align:center;
-  font-size:10px;letter-spacing:1.5px;font-weight:700;
-  color:#fff;white-space:nowrap;
-  position:sticky;top:0;z-index:2;
+  background:#f2f2f2;
+  position:sticky;
+  top:0;
 }
-td{
-  padding:9px 7px;text-align:center;
-  border-bottom:1px solid rgba(255,255,255,0.05);color:#fff;
-}
-.rg1 td{background:rgba(255,215,0,0.09)!important;}
-.rg2 td{background:rgba(192,192,192,0.06)!important;}
-.rg3 td{background:rgba(205,127,50,0.06)!important;}
-td[contenteditable]{background:rgba(255,255,255,0.03);cursor:text;}
-td[contenteditable]:focus{
-  background:rgba(204,0,0,0.15);outline:none;
-  box-shadow:inset 0 0 0 1px #FF3333;
-}
-.tt{font-weight:700;font-size:15px;}
-.tg{font-weight:900;font-size:17px;color:#FFD700;}
 
-/* ===================== TOAST ===================== */
-.toast{
-  position:fixed;top:14px;left:50%;transform:translateX(-50%);
-  background:#1a0000;border:1px solid #FF3333;border-radius:10px;
-  padding:11px 22px;font-size:13px;font-weight:700;letter-spacing:1px;
-  color:#fff;z-index:9999;
-  opacity:0;pointer-events:none;
-  transition:opacity .3s;white-space:nowrap;
+td[contenteditable]{
+  background:#fafafa;
 }
-.toast.on{opacity:1;}
 
-/* ===================== MODAL ===================== */
-.overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,0.9);z-index:1000;
-  justify-content:center;align-items:center;
+.rank1{background:gold !important;}
+.rank2{background:silver !important;}
+.rank3{background:#cd7f32 !important;}
+
+@media print{
+  body{
+    background:white !important;
+    color:black !important;
+  }
+  button{
+    display:none;
+  }
 }
-.overlay.on{display:flex;}
-.mbox{
-  width:88%;max-width:310px;background:#181818;
-  border:1px solid rgba(204,0,0,0.5);border-radius:16px;
-  padding:26px 20px;text-align:center;
-}
-.mbox h3{font-size:18px;font-weight:700;letter-spacing:2px;color:#FF3333;margin-bottom:8px;}
-.mbox p{font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;}
 </style>
 </head>
 <body>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
-<!-- MODAL RESET -->
-<div class="overlay" id="mReset">
-  <div class="mbox">
-    <h3>⚠️ RESET DATA</h3>
-    <p>Semua data team dan poin<br>akan dihapus permanen!</p>
-    <button class="fbtn bred" onclick="doReset()">Ya, Reset Semua</button>
-    <button class="fbtn bghost" onclick="closeM()">Batal</button>
-  </div>
+<!-- LOGIN -->
+<div id="loginPage" class="page active">
+<div class="loginBox">
+<h2>HITUNG POIN BY ISALL</h2>
+<input type="password" id="pass" placeholder="Masukkan Password">
+<button onclick="login()">Login</button>
+<button onclick="requestAdmin()">Request Admin</button>
+</div>
 </div>
 
-<!-- ══════════════ LOGIN ══════════════ -->
-<div id="pgLogin">
-  <div class="lbox">
-    <div class="lff">⚡ FREE FIRE TOURNAMENT</div>
-    <div class="ltitle">HITUNG POIN</div>
-    <div class="lby">BY ISALL</div>
-    <div class="lline"></div>
-    <input class="finp" type="password" id="pInput"
-      placeholder="Masukkan Password"
-      onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="fbtn bred" onclick="doLogin()">🔓 LOGIN</button>
-    <button class="fbtn bghost" onclick="reqAdmin()">📱 Request Admin</button>
-    <div class="lver">v5.0 FINAL</div>
-  </div>
+<!-- TEAM INPUT -->
+<div id="teamPage" class="page">
+<div class="content">
+<h2>Masukkan Nama Team (boleh kosong)</h2>
+<div id="teamInputs"></div>
+<button onclick="saveTeams()">Lanjut</button>
+<button onclick="logout()">Logout</button>
+</div>
 </div>
 
-<!-- ══════════════ TEAM INPUT ══════════════ -->
-<div id="pgTeam">
-  <div class="hbar">
-    <h2>⚔️ DAFTAR TEAM</h2>
-    <p>MINIMAL 2 TEAM · MAKSIMAL 12 TEAM</p>
-  </div>
-  <div class="team-wrap">
-    <div class="cbar">
-      <span class="cbar-lbl">Jumlah Team</span>
-      <span class="cbar-val" id="cntVal">0 / 12</span>
-    </div>
-    <div id="slotList"></div>
-    <button class="addbtn" id="addBtn" onclick="addSlot()">
-      <span style="font-size:18px;color:#FF3333">＋</span>&nbsp;TAMBAH TEAM
-    </button>
-  </div>
-  <div class="sfoot">
-    <button class="fbtn bred" onclick="saveTeams()">✅ SIMPAN &amp; LANJUT</button>
-    <button class="fbtn bghost" onclick="doLogout()">Logout</button>
-  </div>
+<!-- TABLE -->
+<div id="tablePage" class="page">
+<div class="content">
+<h2>Leaderboard Spreadsheet</h2>
+<button onclick="resetAll()">Reset Semua</button>
+<button onclick="logout()">Logout</button>
+<button onclick="openPrintPage()">Print / Save PDF</button>
+
+<div class="tableWrap">
+<table id="tabel">
+<thead>
+<tr>
+<th>No</th>
+<th>Team</th>
+<th>M1 Kill</th><th>M1 Rank</th><th>M1 Total</th>
+<th>M2 Kill</th><th>M2 Rank</th><th>M2 Total</th>
+<th>M3 Kill</th><th>M3 Rank</th><th>M3 Total</th>
+<th>Grand Total</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
 </div>
-
-<!-- ══════════════ TABLE ══════════════ -->
-<div id="pgTable">
-  <div class="thead-bar">
-    <div>
-      <h2>🏆 LEADERBOARD</h2>
-      <p>BY ISALL · MASTER LEAGUE · 3 MATCH</p>
-    </div>
-    <div class="kbadge">
-      <span>POIN / KILL</span>
-      <b>×2</b>
-    </div>
-  </div>
-
-  <div class="actbar">
-    <button class="abtn ag" onclick="dlIMG()">📷 FOTO</button>
-    <button class="abtn ab" onclick="dlPDF()">📄 PDF</button>
-    <button class="abtn ar" onclick="gotoTeam()">✏️ EDIT TIM</button>
-    <button class="abtn ar" onclick="openM()">🗑 RESET</button>
-    <button class="abtn aw" onclick="doLogout()">LOGOUT</button>
-  </div>
-
-  <div class="podwrap" id="podWrap" style="display:none"></div>
-
-  <div class="tscroll">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th style="text-align:left">TEAM</th>
-          <th>M1<br>KILL</th><th>M1<br>RANK</th><th>M1<br>TOT</th>
-          <th>M2<br>KILL</th><th>M2<br>RANK</th><th>M2<br>TOT</th>
-          <th>M3<br>KILL</th><th>M3<br>RANK</th><th>M3<br>TOT</th>
-          <th>GRAND<br>TOTAL</th>
-        </tr>
-      </thead>
-      <tbody id="tBody"></tbody>
-    </table>
-  </div>
+</div>
 </div>
 
 <script>
-/* ============================================================
-   PASSWORD
-============================================================ */
-var PASS = ["adminA1","adminB2","adminC3","adminD4","adminE5"];
 
-/* ============================================================
-   SISTEM POIN — Master League S2
-   Kill x2 | 1st=20 2nd=17 3rd=15 4th=13 5th=12 6th=10
-            | 7th=6  8th=4  9th=3  10th=2 11th=1 12th=0
-============================================================ */
-var RP = [20,17,15,13,12,10,6,4,3,2,1,0];
-var KX = 2;
-function rp(r){var i=parseInt(r,10)-1;return(i>=0&&i<=11)?RP[i]:0;}
+let passwords=["adminA1","adminB2","adminC3","adminD4","adminE5"];
+let teams=JSON.parse(localStorage.getItem("teams"))||[];
 
-/* ============================================================
-   DATA
-============================================================ */
-var teams = [];
-var sc = 0; // jumlah slot
+/* LOGIN */
+function login(){
+let p=document.getElementById("pass").value;
+let device=localStorage.getItem("devicePass");
 
-/* ============================================================
-   STORAGE — triple fallback: localStorage > sessionStorage > memori
-============================================================ */
-var _mem = {};
-function sSet(k,v){
-  var s=JSON.stringify(v);
-  try{localStorage.setItem(k,s);return;}catch(e){}
-  try{sessionStorage.setItem(k,s);return;}catch(e){}
-  _mem[k]=s;
+if(passwords.includes(p)){
+if(!device){
+localStorage.setItem("devicePass",p);
+localStorage.setItem("admin","yes");
+nextPage();
 }
-function sGet(k){
-  var s=null;
-  try{s=localStorage.getItem(k);}catch(e){}
-  if(!s){try{s=sessionStorage.getItem(k);}catch(e){}}
-  if(!s){s=_mem[k]||null;}
-  if(!s)return null;
-  try{return JSON.parse(s);}catch(e){return null;}
+else if(device===p){
+localStorage.setItem("admin","yes");
+nextPage();
 }
-function sDel(k){
-  try{localStorage.removeItem(k);}catch(e){}
-  try{sessionStorage.removeItem(k);}catch(e){}
-  delete _mem[k];
+else{
+alert("Password sudah dipakai di HP lain!");
+}
+}else{
+alert("Password salah!");
+}
 }
 
-/* ============================================================
-   TOAST
-============================================================ */
-var _tt;
-function toast(msg,c){
-  var el=document.getElementById('toast');
-  el.textContent=msg;
-  el.style.borderColor=c||'#FF3333';
-  el.classList.add('on');
-  clearTimeout(_tt);
-  _tt=setTimeout(function(){el.classList.remove('on');},2600);
+function logout(){
+localStorage.removeItem("admin");
+location.reload();
 }
 
-/* ============================================================
-   NAVIGASI — pakai style.display langsung, paling aman di WebView
-============================================================ */
-function goPg(name){
-  // sembunyikan semua
-  document.getElementById('pgLogin').style.display='none';
-  document.getElementById('pgTeam').style.display='none';
-  document.getElementById('pgTable').style.display='none';
-
-  if(name==='login'){
-    document.getElementById('pgLogin').style.cssText='display:flex;justify-content:center;align-items:center;';
-  } else if(name==='team'){
-    document.getElementById('pgTeam').style.display='block';
-  } else if(name==='table'){
-    document.getElementById('pgTable').style.display='block';
-  }
-  window.scrollTo(0,0);
+function requestAdmin(){
+window.open("https://wa.me/6281234567890?text=Saya%20ingin%20jadi%20admin");
 }
 
-/* ============================================================
-   LOGIN
-============================================================ */
-function doLogin(){
-  var p=document.getElementById('pInput').value.trim();
-  if(!p){toast('⚠️ Masukkan password!');return;}
-  if(PASS.indexOf(p)===-1){toast('❌ Password salah!');return;}
-
-  // Simpan auth (tidak blokir jika gagal)
-  try{sSet('ff_auth','1');}catch(e){}
-
-  // Load data & navigasi LANGSUNG
-  var saved=sGet('ff_teams');
-  teams=saved||[];
-
-  if(teams.length>=2){
-    goPg('table');
-    renderTable();
-  } else {
-    goPg('team');
-    renderSlots();
-  }
+/* NAVIGATION */
+function nextPage(){
+loginPage.classList.remove("active");
+if(teams.length==12){
+showTable();
+}else{
+teamPage.classList.add("active");
+createInputs();
+}
 }
 
-function doLogout(){
-  sDel('ff_auth');
-  teams=[];sc=0;
-  document.getElementById('pInput').value='';
-  goPg('login');
+function showTable(){
+teamPage.classList.remove("active");
+tablePage.classList.add("active");
+renderTable();
 }
 
-function reqAdmin(){
-  window.open('https://wa.me/6281234567890?text=Request%20akses%20admin%20Hitung%20Poin%20By%20Isall');
+/* TEAM INPUT */
+function createInputs(){
+let html="";
+for(let i=1;i<=12;i++){
+html+=`<input type="text" placeholder="Nama Team ${i}" id="team${i}"><br>`;
 }
-
-/* ============================================================
-   TEAM SLOTS
-============================================================ */
-function renderSlots(){
-  var list=document.getElementById('slotList');
-  list.innerHTML='';
-  sc=0;
-  if(teams.length===0){
-    buildSlot('');
-    buildSlot('');
-  } else {
-    for(var i=0;i<teams.length;i++) buildSlot(teams[i].name);
-  }
-  updCnt();
-}
-
-function buildSlot(val){
-  var n=sc;
-  var list=document.getElementById('slotList');
-  var d=document.createElement('div');
-  d.className='slot'+(val?' filled':'');
-  d.id='sl'+n;
-  d.innerHTML=
-    '<div class="snum">'+(n+1)+'</div>'+
-    '<input class="sinp" type="text" placeholder="Nama team '+(n+1)+'" value="'+eH(val)+'" oninput="onSI(this)">'+
-    '<button class="sdel" onclick="delSlot(this)">✕</button>';
-  list.appendChild(d);
-  sc++;
-  document.getElementById('addBtn').style.display=sc>=12?'none':'flex';
-}
-
-function addSlot(){
-  if(sc>=12){toast('Maksimal 12 team!');return;}
-  buildSlot('');
-  updCnt();
-}
-
-function onSI(el){
-  var s=el.closest?el.closest('.slot'):el.parentNode;
-  if(s) s.className='slot'+(el.value.trim()?' filled':'');
-}
-
-function delSlot(btn){
-  var s=btn.parentNode;
-  if(s) s.parentNode.removeChild(s);
-  reIdx();
-}
-
-function reIdx(){
-  var all=document.querySelectorAll('.slot');
-  sc=all.length;
-  for(var i=0;i<all.length;i++){
-    all[i].id='sl'+i;
-    all[i].querySelector('.snum').textContent=i+1;
-    all[i].querySelector('.sinp').placeholder='Nama team '+(i+1);
-  }
-  updCnt();
-  document.getElementById('addBtn').style.display=sc>=12?'none':'flex';
-}
-
-function updCnt(){
-  document.getElementById('cntVal').textContent=sc+' / 12';
+teamInputs.innerHTML=html;
 }
 
 function saveTeams(){
-  var all=document.querySelectorAll('.slot');
-  var names=[];
-  for(var i=0;i<all.length;i++){
-    var v=all[i].querySelector('.sinp').value.trim();
-    if(v) names.push(v);
-  }
-  if(names.length<2){toast('⚠️ Minimal 2 team!');return;}
-
-  var oldT=teams.slice();
-  teams=[];
-  for(var j=0;j<names.length;j++){
-    var nm=names[j];
-    var prev=null;
-    for(var k=0;k<oldT.length;k++){if(oldT[k].name===nm){prev=oldT[k];break;}}
-    teams.push(prev||{name:nm,k1:0,r1:1,k2:0,r2:1,k3:0,r3:1});
-  }
-  sSet('ff_teams',teams);
-  toast('✅ Team tersimpan!','#44ff44');
-  goPg('table');
-  renderTable();
+teams=[];
+for(let i=1;i<=12;i++){
+let name=document.getElementById("team"+i).value.trim();
+if(name==="") name="Team "+i;
+teams.push({name,k1:0,r1:0,k2:0,r2:0,k3:0,r3:0});
+}
+localStorage.setItem("teams",JSON.stringify(teams));
+showTable();
 }
 
-function gotoTeam(){
-  goPg('team');
-  renderSlots();
+/* POINT SYSTEM */
+function rankPoint(r){
+switch(parseInt(r)){
+case 1:return 12;
+case 2:return 9;
+case 3:return 8;
+case 4:return 7;
+case 5:return 6;
+case 6:return 5;
+case 7:return 4;
+case 8:return 3;
+case 9:return 2;
+case 10:return 1;
+default:return 0;
 }
-
-/* ============================================================
-   TABLE
-============================================================ */
-function calc(t){
-  var m1=t.k1*KX+rp(t.r1);
-  var m2=t.k2*KX+rp(t.r2);
-  var m3=t.k3*KX+rp(t.r3);
-  return{m1:m1,m2:m2,m3:m3,tot:m1+m2+m3};
 }
 
 function renderTable(){
-  // Buat salinan + hitung poin
-  var list=[];
-  for(var i=0;i<teams.length;i++){
-    var c=calc(teams[i]);
-    list.push({
-      i:i,name:teams[i].name,
-      k1:teams[i].k1,r1:teams[i].r1,
-      k2:teams[i].k2,r2:teams[i].r2,
-      k3:teams[i].k3,r3:teams[i].r3,
-      m1:c.m1,m2:c.m2,m3:c.m3,tot:c.tot
-    });
-  }
-  list.sort(function(a,b){return b.tot-a.tot;});
 
-  var tbody=document.getElementById('tBody');
-  tbody.innerHTML='';
+teams.sort((a,b)=>{
+let ta=(a.k1+rankPoint(a.r1))+(a.k2+rankPoint(a.r2))+(a.k3+rankPoint(a.r3));
+let tb=(b.k1+rankPoint(b.r1))+(b.k2+rankPoint(b.r2))+(b.k3+rankPoint(b.r3));
+return tb-ta;
+});
 
-  for(var r=0;r<list.length;r++){
-    var t=list[r];
-    var rc=r===0?'rg1':r===1?'rg2':r===2?'rg3':'';
-    var med=r===0?'🥇':r===1?'🥈':r===2?'🥉':(r+1);
-    var oi=t.i;
+let tbody="";
 
-    var tr=document.createElement('tr');
-    tr.className=rc;
-    tr.innerHTML=
-      '<td>'+med+'</td>'+
-      '<td style="text-align:left;font-weight:700;white-space:nowrap">'+eH(t.name)+'</td>'+
-      '<td contenteditable oninput="upd('+oi+',\'k1\',this)">'+t.k1+'</td>'+
-      '<td contenteditable oninput="upd('+oi+',\'r1\',this)">'+t.r1+'</td>'+
-      '<td class="tt">'+t.m1+'</td>'+
-      '<td contenteditable oninput="upd('+oi+',\'k2\',this)">'+t.k2+'</td>'+
-      '<td contenteditable oninput="upd('+oi+',\'r2\',this)">'+t.r2+'</td>'+
-      '<td class="tt">'+t.m2+'</td>'+
-      '<td contenteditable oninput="upd('+oi+',\'k3\',this)">'+t.k3+'<
+teams.forEach((t,i)=>{
+
+let m1=t.k1+rankPoint(t.r1);
+let m2=t.k2+rankPoint(t.r2);
+let m3=t.k3+rankPoint(t.r3);
+let total=m1+m2+m3;
+
+let rankClass="";
+if(i==0)rankClass="rank1";
+if(i==1)rankClass="rank2";
+if(i==2)rankClass="rank3";
+
+tbody+=`
+<tr class="${rankClass}">
+<td>${i+1}</td>
+<td>${t.name}</td>
+<td contenteditable oninput="update(${i},'k1',this.innerText)">${t.k1}</td>
+<td contenteditable oninput="update(${i},'r1',this.innerText)">${t.r1}</td>
+<td>${m1}</td>
+<td contenteditable oninput="update(${i},'k2',this.innerText)">${t.k2}</td>
+<td contenteditable oninput="update(${i},'r2',this.innerText)">${t.r2}</td>
+<td>${m2}</td>
+<td contenteditable oninput="update(${i},'k3',this.innerText)">${t.k3}</td>
+<td contenteditable oninput="update(${i},'r3',this.innerText)">${t.r3}</td>
+<td>${m3}</td>
+<td>${total}</td>
+</tr>
+`;
+});
+
+document.querySelector("#tabel tbody").innerHTML=tbody;
+localStorage.setItem("teams",JSON.stringify(teams));
+}
+
+function update(i,key,value){
+teams[i][key]=parseInt(value)||0;
+renderTable();
+}
+
+/* PRINT */
+function openPrintPage(){
+window.print();
+}
+
+function resetAll(){
+if(confirm("Reset semua data?")){
+localStorage.removeItem("teams");
+location.reload();
+}
+}
+
+if(localStorage.getItem("admin")=="yes"){
+nextPage();
+}
+
+</script>
+
+</body>
+</html>
