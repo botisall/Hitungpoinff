@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>HITUNG POIN BY ISALL</title>
+<style>
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+margin:0;
+}
+
+.center{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+flex-direction:column;
+}
+
+input,button{
+padding:10px;
+margin:5px;
+border-radius:8px;
+border:none;
+}
+
+button{
+background:#22c55e;
+color:white;
+cursor:pointer;
+}
+
+table{
+border-collapse:collapse;
+min-width:1000px;
+}
+
+th,td{
+border:1px solid #444;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#1e293b;
+}
+
+.gold{background:#FFD700;color:black;}
+.silver{background:#C0C0C0;color:black;}
+.bronze{background:#CD7F32;color:black;}
+
+.scroll{
+overflow:auto;
+height:80vh;
+}
+
+</style>
+</head>
+<body>
+
+<div id="login" class="center">
+<h1>HITUNG POIN BY ISALL</h1>
+<input type="password" id="pass" placeholder="Masukkan Password">
+<button onclick="login()">LOGIN</button>
+</div>
+
+<div id="app" style="display:none;padding:20px;">
+<h2>INPUT TEAM (12)</h2>
+<div id="teamInput"></div>
+<button onclick="saveTeams()">Simpan Team</button>
+
+<hr>
+
+<div class="scroll">
+<table id="table">
+<thead>
+<tr>
+<th>Team</th>
+<th>M1 Kill</th><th>M1 Rank</th>
+<th>M2 Kill</th><th>M2 Rank</th>
+<th>M3 Kill</th><th>M3 Rank</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+
+<br>
+<button onclick="calculate()">Hitung</button>
+<button onclick="window.print()">Print / Save PDF</button>
+<button onclick="resetAll()">Reset</button>
+
+</div>
+
+<script>
+
+let passwords=["adminA1","adminB2","adminC3","adminD4","adminE5"];
+
+function login(){
+let input=document.getElementById("pass").value;
+let saved=localStorage.getItem("devicePass");
+
+if(passwords.includes(input)){
+    if(!saved){
+        localStorage.setItem("devicePass",input);
+        showApp();
+    }else if(saved===input){
+        showApp();
+    }else{
+        alert("Password sudah dipakai di device ini!");
+    }
+}else{
+    alert("Password salah!");
+}
+}
+
+function showApp(){
+document.getElementById("login").style.display="none";
+document.getElementById("app").style.display="block";
+init();
+}
+
+function init(){
+let container=document.getElementById("teamInput");
+for(let i=1;i<=12;i++){
+container.innerHTML+=`<input placeholder="Team ${i}" id="team${i}">`;
+}
+}
+
+function saveTeams(){
+let tbody=document.querySelector("#table tbody");
+tbody.innerHTML="";
+for(let i=1;i<=12;i++){
+let name=document.getElementById("team"+i).value||("Team "+i);
+tbody.innerHTML+=`
+<tr>
+<td>${name}</td>
+<td><input type="number" value="0"></td>
+<td><input type="number" value="0"></td>
+<td><input type="number" value="0"></td>
+<td><input type="number" value="0"></td>
+<td><input type="number" value="0"></td>
+<td><input type="number" value="0"></td>
+<td class="total">0</td>
+</tr>`;
+}
+}
+
+function rankPoint(r){
+r=parseInt(r);
+if(r==1)return 12;
+if(r==2)return 9;
+if(r==3)return 8;
+if(r==4)return 7;
+if(r==5)return 6;
+if(r==6)return 5;
+if(r==7)return 4;
+if(r==8)return 3;
+if(r==9)return 2;
+if(r==10)return 1;
+return 0;
+}
+
+function calculate(){
+let rows=document.querySelectorAll("#table tbody tr");
+let totals=[];
+rows.forEach(row=>{
+let inputs=row.querySelectorAll("input");
+let total=0;
+for(let i=0;i<6;i+=2){
+let kill=parseInt(inputs[i].value)||0;
+let rank=parseInt(inputs[i+1].value)||0;
+total+=kill+rankPoint(rank);
+}
+row.querySelector(".total").innerText=total;
+totals.push(total);
+row.className="";
+});
+totals.sort((a,b)=>b-a);
+
+rows.forEach(row=>{
+let t=parseInt(row.querySelector(".total").innerText);
+if(t===totals[0])row.classList.add("gold");
+else if(t===totals[1])row.classList.add("silver");
+else if(t===totals[2])row.classList.add("bronze");
+});
+}
+
+function resetAll(){
+localStorage.clear();
+location.reload();
+}
+
+</script>
+</body>
+</html>
