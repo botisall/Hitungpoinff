@@ -7,234 +7,257 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-:root{
-  --red:#CC0000;
-  --red2:#FF3333;
-  --gold:#FFD700;
-  --silver:#C0C0C0;
-  --bronze:#CD7F32;
-  --dark:#0A0A0A;
-  --dark2:#111111;
-  --card:#181818;
-  --border:rgba(204,0,0,0.4);
-  --muted:#777;
-}
+/* ===================== RESET ===================== */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{width:100%;overflow-x:hidden;}
+html,body{width:100%;min-height:100vh;overflow-x:hidden;}
 body{
   font-family:'Barlow Condensed',Arial,sans-serif;
-  background:var(--dark);color:#fff;
-  min-height:100vh;
+  background:#0A0A0A;color:#fff;
 }
 body::after{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse at 10% 10%,rgba(204,0,0,0.1),transparent 55%),
-             radial-gradient(ellipse at 90% 90%,rgba(150,0,0,0.08),transparent 55%);
+  background:
+    radial-gradient(ellipse at 10% 10%,rgba(204,0,0,0.1),transparent 55%),
+    radial-gradient(ellipse at 90% 90%,rgba(150,0,0,0.08),transparent 55%);
 }
 
-/* PAGES */
-.page{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:1;}
-.page.active{display:flex;}
+/* ===================== HALAMAN ===================== */
+/* Semua hidden by default - diatur via JS style langsung */
+#pgLogin,#pgTeam,#pgTable{
+  display:none;width:100%;min-height:100vh;
+  position:relative;z-index:1;
+}
 
-/* ── LOGIN ── */
-.login-box{
+/* ===================== LOGIN ===================== */
+#pgLogin{
+  justify-content:center;
+  align-items:center;
+}
+.lbox{
   width:88%;max-width:340px;
-  background:var(--card);
-  border:1px solid var(--border);
+  background:#181818;
+  border:1px solid rgba(204,0,0,0.45);
   border-radius:18px;padding:32px 24px;
   text-align:center;
-  box-shadow:0 0 60px rgba(204,0,0,0.2);
+  box-shadow:0 0 60px rgba(204,0,0,0.2),0 0 120px rgba(204,0,0,0.06);
   position:relative;overflow:hidden;
 }
-.login-box::before{
+.lbox::before{
   content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:linear-gradient(90deg,transparent,var(--red2),var(--gold),var(--red2),transparent);
+  background:linear-gradient(90deg,transparent,#FF3333,#FFD700,#FF3333,transparent);
 }
-.login-ff{font-size:12px;letter-spacing:5px;color:var(--red2);margin-bottom:8px;}
-.login-title{font-size:30px;font-weight:900;letter-spacing:4px;line-height:1;}
-.login-by{font-size:12px;letter-spacing:4px;color:var(--muted);margin:6px 0 22px;}
-.login-line{width:50px;height:2px;background:linear-gradient(90deg,transparent,var(--red),transparent);margin:0 auto 24px;}
+.lff{font-size:12px;letter-spacing:5px;color:#FF3333;margin-bottom:8px;}
+.ltitle{font-size:32px;font-weight:900;letter-spacing:4px;line-height:1;}
+.lby{font-size:12px;letter-spacing:4px;color:#666;margin:5px 0 20px;}
+.lline{width:50px;height:2px;background:linear-gradient(90deg,transparent,#CC0000,transparent);margin:0 auto 22px;}
+.lver{margin-top:14px;font-size:10px;color:#2a2a2a;letter-spacing:1px;}
 
-.inp{
+/* ===================== INPUT ===================== */
+.finp{
   display:block;width:100%;padding:13px 14px;margin-bottom:12px;
   background:#0f0f0f;border:1px solid rgba(204,0,0,0.35);
   border-radius:10px;color:#fff;
   font-family:'Barlow Condensed',Arial,sans-serif;
-  font-size:17px;font-weight:600;text-align:center;outline:none;
-  -webkit-appearance:none;transition:border-color .2s;
+  font-size:17px;font-weight:600;text-align:center;
+  outline:none;-webkit-appearance:none;
+  transition:border-color .2s;
 }
-.inp:focus{border-color:var(--red2);}
-.inp::placeholder{color:#444;font-weight:400;}
+.finp:focus{border-color:#FF3333;}
+.finp::placeholder{color:#444;font-weight:400;}
 
-.btn{
-  display:block;width:100%;padding:13px;border:none;border-radius:10px;
+/* ===================== TOMBOL ===================== */
+.fbtn{
+  display:block;width:100%;padding:13px;border:none;
+  border-radius:10px;cursor:pointer;
   font-family:'Barlow Condensed',Arial,sans-serif;
   font-size:14px;font-weight:700;letter-spacing:3px;
-  cursor:pointer;text-transform:uppercase;transition:opacity .15s;
-  margin-bottom:9px;
+  text-transform:uppercase;margin-bottom:9px;
+  transition:opacity .15s;
 }
-.btn:active{opacity:.75;}
-.btn-red{background:linear-gradient(135deg,#CC0000,#880000);color:#fff;box-shadow:0 4px 18px rgba(204,0,0,0.35);}
-.btn-ghost{background:transparent;color:var(--muted);border:1px solid rgba(204,0,0,0.3);}
-
-/* ── TEAM PAGE ── */
-#teamPage{justify-content:flex-start;}
-.pg-head{
-  width:100%;background:linear-gradient(180deg,#1a0000,var(--dark));
-  border-bottom:2px solid var(--border);
-  padding:18px 16px 14px;text-align:center;
+.fbtn:active{opacity:.75;}
+.bred{
+  background:linear-gradient(135deg,#CC0000,#880000);
+  color:#fff;box-shadow:0 4px 18px rgba(204,0,0,0.3);
 }
-.pg-head h2{font-size:22px;font-weight:900;letter-spacing:3px;}
-.pg-head p{font-size:11px;color:var(--muted);letter-spacing:2px;margin-top:3px;}
+.bghost{
+  background:transparent;color:#666;
+  border:1px solid rgba(204,0,0,0.3);
+}
 
-.team-body{width:100%;max-width:460px;padding:14px 14px 0;}
-.count-bar{
+/* ===================== HEADER BAR ===================== */
+.hbar{
+  width:100%;
+  background:linear-gradient(180deg,#1a0000,#0A0A0A);
+  border-bottom:2px solid rgba(204,0,0,0.5);
+  padding:14px 16px;text-align:center;
+}
+.hbar h2{font-size:22px;font-weight:900;letter-spacing:3px;}
+.hbar p{font-size:10px;color:#666;letter-spacing:2px;margin-top:3px;}
+
+/* ===================== TEAM PAGE ===================== */
+.team-wrap{
+  width:100%;max-width:460px;
+  margin:0 auto;
+  padding:14px 14px 0;
+}
+.cbar{
   display:flex;align-items:center;justify-content:space-between;
-  background:var(--card);border:1px solid var(--border);
+  background:#181818;border:1px solid rgba(204,0,0,0.35);
   border-radius:10px;padding:10px 14px;margin-bottom:12px;
 }
-.count-label{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
-.count-val{font-size:22px;font-weight:700;color:var(--red2);}
+.cbar-lbl{font-size:11px;letter-spacing:2px;color:#666;text-transform:uppercase;}
+.cbar-val{font-size:22px;font-weight:700;color:#FF3333;}
 
 .slot{
   display:flex;align-items:center;gap:8px;
-  background:var(--card);border:1px solid rgba(204,0,0,0.2);
+  background:#181818;border:1px solid rgba(204,0,0,0.2);
   border-radius:10px;padding:9px 10px;margin-bottom:7px;
   transition:border-color .2s;
 }
-.slot.filled{border-color:rgba(204,0,0,0.5);}
-.slot-no{font-size:17px;font-weight:700;color:var(--red2);min-width:24px;text-align:center;}
-.slot-inp{
+.slot.filled{border-color:rgba(204,0,0,0.55);}
+.snum{font-size:17px;font-weight:700;color:#FF3333;min-width:24px;text-align:center;}
+.sinp{
   flex:1;padding:8px 10px;background:#0f0f0f;
   border:1px solid rgba(204,0,0,0.2);border-radius:8px;
   color:#fff;font-family:'Barlow Condensed',Arial,sans-serif;
-  font-size:15px;font-weight:600;outline:none;transition:border-color .2s;
+  font-size:15px;font-weight:600;outline:none;
+  transition:border-color .2s;
 }
-.slot-inp:focus{border-color:var(--red2);}
-.slot-inp::placeholder{color:#444;font-weight:400;}
-.slot-del{
+.sinp:focus{border-color:#FF3333;}
+.sinp::placeholder{color:#444;font-weight:400;}
+.sdel{
   width:30px;height:30px;background:#1a0000;
   border:1px solid rgba(204,0,0,0.3);border-radius:7px;
-  color:var(--red2);font-size:15px;cursor:pointer;
+  color:#FF3333;font-size:15px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
-.slot-del:active{background:var(--red);color:#fff;}
+.sdel:active{background:#CC0000;color:#fff;}
 
-.add-btn{
+.addbtn{
   width:100%;padding:11px;background:#0f0f0f;
   border:1px dashed rgba(204,0,0,0.4);border-radius:10px;
-  color:var(--muted);font-family:'Barlow Condensed',Arial,sans-serif;
+  color:#666;font-family:'Barlow Condensed',Arial,sans-serif;
   font-size:13px;letter-spacing:2px;cursor:pointer;
   display:flex;align-items:center;justify-content:center;gap:8px;
-  margin-bottom:0;transition:all .2s;
 }
-.add-btn:active{border-color:var(--red2);color:#fff;}
+.addbtn:active{border-color:#FF3333;color:#fff;}
 
-.sticky-foot{
-  width:100%;max-width:460px;
-  padding:14px 14px 20px;
+.sfoot{
   position:sticky;bottom:0;
-  background:linear-gradient(transparent,var(--dark) 35%);
+  background:linear-gradient(transparent,#0A0A0A 38%);
+  padding:16px 14px 22px;
+  width:100%;max-width:460px;
+  margin:0 auto;
 }
 
-/* ── TABLE PAGE ── */
-#tablePage{justify-content:flex-start;}
-.tbl-head{
+/* ===================== TABLE PAGE ===================== */
+.thead-bar{
   width:100%;
-  background:linear-gradient(180deg,#1a0000,var(--dark));
-  border-bottom:2px solid var(--border);
+  background:linear-gradient(180deg,#1a0000,#0A0A0A);
+  border-bottom:2px solid rgba(204,0,0,0.5);
   padding:12px 14px;
   display:flex;align-items:center;justify-content:space-between;
 }
-.tbl-head-left h2{font-size:20px;font-weight:900;letter-spacing:3px;}
-.tbl-head-left p{font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:2px;}
-.kill-badge{text-align:right;}
-.kill-badge span{font-size:10px;color:var(--muted);letter-spacing:1px;display:block;}
-.kill-badge b{font-size:28px;font-weight:900;color:var(--red2);line-height:1;}
+.thead-bar h2{font-size:20px;font-weight:900;letter-spacing:3px;}
+.thead-bar p{font-size:10px;color:#666;letter-spacing:2px;margin-top:2px;}
+.kbadge{text-align:right;}
+.kbadge span{font-size:10px;color:#666;letter-spacing:1px;display:block;}
+.kbadge b{font-size:28px;font-weight:900;color:#FF3333;line-height:1;}
 
-.act-bar{
-  width:100%;display:flex;gap:7px;padding:9px 12px;
-  background:var(--dark2);border-bottom:1px solid rgba(204,0,0,0.15);
+.actbar{
+  display:flex;gap:7px;padding:9px 12px;
+  background:#111;border-bottom:1px solid rgba(204,0,0,0.15);
   overflow-x:auto;
 }
-.act-bar::-webkit-scrollbar{display:none;}
-.act{
-  flex-shrink:0;padding:8px 13px;border:none;border-radius:8px;
+.actbar::-webkit-scrollbar{display:none;}
+.abtn{
+  flex-shrink:0;padding:8px 14px;border:none;border-radius:8px;
   font-family:'Barlow Condensed',Arial,sans-serif;
   font-size:12px;font-weight:700;letter-spacing:1px;
-  cursor:pointer;text-transform:uppercase;transition:opacity .15s;
+  cursor:pointer;text-transform:uppercase;
+  transition:opacity .15s;
 }
-.act:active{opacity:.6;}
-.act-r{background:rgba(204,0,0,0.18);color:var(--red2);border:1px solid var(--border);}
-.act-g{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.3);}
-.act-b{background:rgba(0,150,255,0.1);color:#55aaff;border:1px solid rgba(0,150,255,0.3);}
-.act-w{background:rgba(255,255,255,0.06);color:#aaa;border:1px solid rgba(255,255,255,0.12);}
+.abtn:active{opacity:.6;}
+.ag{background:rgba(255,215,0,0.1);color:#FFD700;border:1px solid rgba(255,215,0,0.3);}
+.ab{background:rgba(0,150,255,0.1);color:#55aaff;border:1px solid rgba(0,150,255,0.3);}
+.ar{background:rgba(204,0,0,0.15);color:#FF3333;border:1px solid rgba(204,0,0,0.35);}
+.aw{background:rgba(255,255,255,0.05);color:#888;border:1px solid rgba(255,255,255,0.1);}
 
 /* PODIUM */
-.podium{
-  width:100%;max-width:460px;
+.podwrap{
   display:flex;gap:7px;align-items:flex-end;
   padding:12px 12px 0;
+  width:100%;max-width:460px;
+  margin:0 auto;
 }
-.pod{
-  flex:1;border-radius:10px 10px 0 0;
-  padding:10px 5px;text-align:center;
-  overflow:hidden;
-}
+.pod{flex:1;border-radius:10px 10px 0 0;padding:10px 5px;text-align:center;overflow:hidden;}
 .pod1{background:rgba(255,215,0,0.1);border:1px solid rgba(255,215,0,0.4);border-bottom:none;min-height:88px;}
 .pod2{background:rgba(192,192,192,0.08);border:1px solid rgba(192,192,192,0.3);border-bottom:none;min-height:72px;}
 .pod3{background:rgba(205,127,50,0.08);border:1px solid rgba(205,127,50,0.3);border-bottom:none;min-height:60px;}
-.pod-ico{font-size:20px;display:block;margin-bottom:2px;}
-.pod-name{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pod-sc{font-size:20px;font-weight:900;}
-.pod1 .pod-sc{color:var(--gold);}
-.pod2 .pod-sc{color:var(--silver);}
-.pod3 .pod-sc{color:var(--bronze);}
+.pico{font-size:20px;display:block;margin-bottom:2px;}
+.pnm{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.psc{font-size:20px;font-weight:900;}
+.pod1 .psc{color:#FFD700;}
+.pod2 .psc{color:#C0C0C0;}
+.pod3 .psc{color:#CD7F32;}
 
 /* TABLE */
-.tbl-scroll{width:100%;overflow-x:auto;padding:0 10px 30px;max-width:460px;}
-.tbl-scroll::-webkit-scrollbar{height:3px;}
-.tbl-scroll::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px;}
+.tscroll{
+  overflow-x:auto;padding:0 10px 40px;
+  width:100%;max-width:460px;
+  margin:0 auto;
+}
+.tscroll::-webkit-scrollbar{height:3px;}
+.tscroll::-webkit-scrollbar-thumb{background:#CC0000;border-radius:2px;}
 
 table{border-collapse:collapse;width:100%;min-width:680px;font-size:13px;}
-thead tr{background:var(--red);}
+thead tr{background:#CC0000;}
 th{
-  padding:9px 7px;text-align:center;font-size:10px;
-  letter-spacing:1.5px;font-weight:700;color:#fff;
-  white-space:nowrap;position:sticky;top:0;z-index:2;
+  padding:9px 7px;text-align:center;
+  font-size:10px;letter-spacing:1.5px;font-weight:700;
+  color:#fff;white-space:nowrap;
+  position:sticky;top:0;z-index:2;
 }
 td{
   padding:9px 7px;text-align:center;
   border-bottom:1px solid rgba(255,255,255,0.05);color:#fff;
 }
-.r1 td{background:rgba(255,215,0,0.09)!important;}
-.r2 td{background:rgba(192,192,192,0.06)!important;}
-.r3 td{background:rgba(205,127,50,0.06)!important;}
+.rg1 td{background:rgba(255,215,0,0.09)!important;}
+.rg2 td{background:rgba(192,192,192,0.06)!important;}
+.rg3 td{background:rgba(205,127,50,0.06)!important;}
 td[contenteditable]{background:rgba(255,255,255,0.03);cursor:text;}
-td[contenteditable]:focus{background:rgba(204,0,0,0.18);outline:none;box-shadow:inset 0 0 0 1px var(--red2);}
-.td-t{font-weight:700;font-size:15px;}
-.td-g{font-weight:900;font-size:17px;color:var(--gold);}
+td[contenteditable]:focus{
+  background:rgba(204,0,0,0.15);outline:none;
+  box-shadow:inset 0 0 0 1px #FF3333;
+}
+.tt{font-weight:700;font-size:15px;}
+.tg{font-weight:900;font-size:17px;color:#FFD700;}
 
-/* TOAST */
+/* ===================== TOAST ===================== */
 .toast{
-  position:fixed;top:16px;left:50%;transform:translateX(-50%);
-  background:#1a0000;border:1px solid var(--red2);border-radius:10px;
+  position:fixed;top:14px;left:50%;transform:translateX(-50%);
+  background:#1a0000;border:1px solid #FF3333;border-radius:10px;
   padding:11px 22px;font-size:13px;font-weight:700;letter-spacing:1px;
-  color:#fff;z-index:999;opacity:0;pointer-events:none;
+  color:#fff;z-index:9999;
+  opacity:0;pointer-events:none;
   transition:opacity .3s;white-space:nowrap;
 }
 .toast.on{opacity:1;}
 
-/* MODAL */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:100;justify-content:center;align-items:center;}
+/* ===================== MODAL ===================== */
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.9);z-index:1000;
+  justify-content:center;align-items:center;
+}
 .overlay.on{display:flex;}
-.modal{
-  width:88%;max-width:320px;background:var(--card);
-  border:1px solid var(--border);border-radius:16px;
+.mbox{
+  width:88%;max-width:310px;background:#181818;
+  border:1px solid rgba(204,0,0,0.5);border-radius:16px;
   padding:26px 20px;text-align:center;
 }
-.modal h3{font-size:18px;font-weight:700;letter-spacing:2px;color:var(--red2);margin-bottom:8px;}
-.modal p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.mbox h3{font-size:18px;font-weight:700;letter-spacing:2px;color:#FF3333;margin-bottom:8px;}
+.mbox p{font-size:13px;color:#666;line-height:1.6;margin-bottom:18px;}
 </style>
 </head>
 <body>
@@ -243,76 +266,77 @@ td[contenteditable]:focus{background:rgba(204,0,0,0.18);outline:none;box-shadow:
 <div class="toast" id="toast"></div>
 
 <!-- MODAL RESET -->
-<div class="overlay" id="modalReset">
-  <div class="modal">
+<div class="overlay" id="mReset">
+  <div class="mbox">
     <h3>⚠️ RESET DATA</h3>
     <p>Semua data team dan poin<br>akan dihapus permanen!</p>
-    <button class="btn btn-red" onclick="doReset()">Ya, Reset Semua</button>
-    <button class="btn btn-ghost" onclick="closeModal()">Batal</button>
+    <button class="fbtn bred" onclick="doReset()">Ya, Reset Semua</button>
+    <button class="fbtn bghost" onclick="closeM()">Batal</button>
   </div>
 </div>
 
-<!-- ══════════ LOGIN ══════════ -->
-<div id="loginPage" class="page active">
-  <div class="login-box">
-    <div class="login-ff">⚡ FREE FIRE TOURNAMENT</div>
-    <div class="login-title">HITUNG POIN</div>
-    <div class="login-by">BY ISALL</div>
-    <div class="login-line"></div>
-    <input class="inp" type="password" id="passInput" placeholder="Masukkan Password"
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="pgLogin">
+  <div class="lbox">
+    <div class="lff">⚡ FREE FIRE TOURNAMENT</div>
+    <div class="ltitle">HITUNG POIN</div>
+    <div class="lby">BY ISALL</div>
+    <div class="lline"></div>
+    <input class="finp" type="password" id="pInput"
+      placeholder="Masukkan Password"
       onkeydown="if(event.key==='Enter')doLogin()">
-    <button class="btn btn-red" onclick="doLogin()">🔓 LOGIN</button>
-    <button class="btn btn-ghost" onclick="reqAdmin()">📱 Request Admin</button>
-    <div style="margin-top:14px;font-size:10px;color:#333;letter-spacing:1px;">v3.0 FIXED</div>
+    <button class="fbtn bred" onclick="doLogin()">🔓 LOGIN</button>
+    <button class="fbtn bghost" onclick="reqAdmin()">📱 Request Admin</button>
+    <div class="lver">v5.0 FINAL</div>
   </div>
 </div>
 
-<!-- ══════════ TEAM INPUT ══════════ -->
-<div id="teamPage" class="page">
-  <div class="pg-head">
+<!-- ══════════════ TEAM INPUT ══════════════ -->
+<div id="pgTeam">
+  <div class="hbar">
     <h2>⚔️ DAFTAR TEAM</h2>
     <p>MINIMAL 2 TEAM · MAKSIMAL 12 TEAM</p>
   </div>
-  <div class="team-body" id="teamBody">
-    <div class="count-bar">
-      <span class="count-label">Jumlah Team</span>
-      <span class="count-val" id="cntVal">0 / 12</span>
+  <div class="team-wrap">
+    <div class="cbar">
+      <span class="cbar-lbl">Jumlah Team</span>
+      <span class="cbar-val" id="cntVal">0 / 12</span>
     </div>
     <div id="slotList"></div>
-    <button class="add-btn" id="addBtn" onclick="addSlot()">
-      <span style="font-size:18px;color:var(--red2)">＋</span> TAMBAH TEAM
+    <button class="addbtn" id="addBtn" onclick="addSlot()">
+      <span style="font-size:18px;color:#FF3333">＋</span>&nbsp;TAMBAH TEAM
     </button>
   </div>
-  <div class="sticky-foot">
-    <button class="btn btn-red" onclick="saveTeams()">✅ SIMPAN &amp; LANJUT</button>
-    <button class="btn btn-ghost" onclick="doLogout()">Logout</button>
+  <div class="sfoot">
+    <button class="fbtn bred" onclick="saveTeams()">✅ SIMPAN &amp; LANJUT</button>
+    <button class="fbtn bghost" onclick="doLogout()">Logout</button>
   </div>
 </div>
 
-<!-- ══════════ TABLE ══════════ -->
-<div id="tablePage" class="page">
-  <div class="tbl-head">
-    <div class="tbl-head-left">
+<!-- ══════════════ TABLE ══════════════ -->
+<div id="pgTable">
+  <div class="thead-bar">
+    <div>
       <h2>🏆 LEADERBOARD</h2>
       <p>BY ISALL · MASTER LEAGUE · 3 MATCH</p>
     </div>
-    <div class="kill-badge">
-      <span>POIN/KILL</span>
+    <div class="kbadge">
+      <span>POIN / KILL</span>
       <b>×2</b>
     </div>
   </div>
 
-  <div class="act-bar">
-    <button class="act act-g" onclick="doDownloadIMG()">📷 FOTO</button>
-    <button class="act act-b" onclick="doDownloadPDF()">📄 PDF</button>
-    <button class="act act-r" onclick="goEditTeam()">✏️ EDIT TIM</button>
-    <button class="act act-r" onclick="openModal()">🗑 RESET</button>
-    <button class="act act-w" onclick="doLogout()">LOGOUT</button>
+  <div class="actbar">
+    <button class="abtn ag" onclick="dlIMG()">📷 FOTO</button>
+    <button class="abtn ab" onclick="dlPDF()">📄 PDF</button>
+    <button class="abtn ar" onclick="gotoTeam()">✏️ EDIT TIM</button>
+    <button class="abtn ar" onclick="openM()">🗑 RESET</button>
+    <button class="abtn aw" onclick="doLogout()">LOGOUT</button>
   </div>
 
-  <div class="podium" id="podium" style="display:none"></div>
+  <div class="podwrap" id="podWrap" style="display:none"></div>
 
-  <div class="tbl-scroll">
+  <div class="tscroll">
     <table>
       <thead>
         <tr>
@@ -330,252 +354,252 @@ td[contenteditable]:focus{background:rgba(204,0,0,0.18);outline:none;box-shadow:
 </div>
 
 <script>
-/* ═══════════════════════════════════════
-   STORAGE — aman untuk WebView/AppsGeyser
-   Gunakan sessionStorage dulu, fallback memory
-═══════════════════════════════════════ */
-var _mem = {}; // fallback jika semua storage gagal
-
-function stor_set(key, val) {
-  var s = JSON.stringify(val);
-  try { localStorage.setItem(key, s); return; } catch(e){}
-  try { sessionStorage.setItem(key, s); return; } catch(e){}
-  _mem[key] = s;
-}
-function stor_get(key) {
-  var s = null;
-  try { s = localStorage.getItem(key); } catch(e){}
-  if (!s) { try { s = sessionStorage.getItem(key); } catch(e){} }
-  if (!s) { s = _mem[key] || null; }
-  if (!s) return null;
-  try { return JSON.parse(s); } catch(e){ return null; }
-}
-function stor_del(key) {
-  try { localStorage.removeItem(key); } catch(e){}
-  try { sessionStorage.removeItem(key); } catch(e){}
-  delete _mem[key];
-}
-
-/* ═══════════════════════════════════════
-   PASSWORDS & STATE
-═══════════════════════════════════════ */
+/* ============================================================
+   PASSWORD
+============================================================ */
 var PASS = ["adminA1","adminB2","adminC3","adminD4","adminE5"];
 
-// Poin placement sesuai Master League S2
-var RANK_PTS = [20,17,15,13,12,10,6,4,3,2,1,0];
-function rankPt(r){ var i=parseInt(r)-1; return(i>=0&&i<RANK_PTS.length)?RANK_PTS[i]:0; }
-var KILL_X = 2;
+/* ============================================================
+   SISTEM POIN — Master League S2
+   Kill x2 | 1st=20 2nd=17 3rd=15 4th=13 5th=12 6th=10
+            | 7th=6  8th=4  9th=3  10th=2 11th=1 12th=0
+============================================================ */
+var RP = [20,17,15,13,12,10,6,4,3,2,1,0];
+var KX = 2;
+function rp(r){var i=parseInt(r,10)-1;return(i>=0&&i<=11)?RP[i]:0;}
 
-var teams = []; // [{name,k1,r1,k2,r2,k3,r3}, ...]
-var isLoggedIn = false;
-var slotCount = 0;
+/* ============================================================
+   DATA
+============================================================ */
+var teams = [];
+var sc = 0; // jumlah slot
 
-/* ═══════════════════════════════════════
+/* ============================================================
+   STORAGE — triple fallback: localStorage > sessionStorage > memori
+============================================================ */
+var _mem = {};
+function sSet(k,v){
+  var s=JSON.stringify(v);
+  try{localStorage.setItem(k,s);return;}catch(e){}
+  try{sessionStorage.setItem(k,s);return;}catch(e){}
+  _mem[k]=s;
+}
+function sGet(k){
+  var s=null;
+  try{s=localStorage.getItem(k);}catch(e){}
+  if(!s){try{s=sessionStorage.getItem(k);}catch(e){}}
+  if(!s){s=_mem[k]||null;}
+  if(!s)return null;
+  try{return JSON.parse(s);}catch(e){return null;}
+}
+function sDel(k){
+  try{localStorage.removeItem(k);}catch(e){}
+  try{sessionStorage.removeItem(k);}catch(e){}
+  delete _mem[k];
+}
+
+/* ============================================================
    TOAST
-═══════════════════════════════════════ */
-var _tTimer;
-function showToast(msg, color) {
-  var el = document.getElementById('toast');
-  el.textContent = msg;
-  el.style.borderColor = color || 'var(--red2)';
+============================================================ */
+var _tt;
+function toast(msg,c){
+  var el=document.getElementById('toast');
+  el.textContent=msg;
+  el.style.borderColor=c||'#FF3333';
   el.classList.add('on');
-  clearTimeout(_tTimer);
-  _tTimer = setTimeout(function(){ el.classList.remove('on'); }, 2600);
+  clearTimeout(_tt);
+  _tt=setTimeout(function(){el.classList.remove('on');},2600);
 }
 
-/* ═══════════════════════════════════════
-   PAGE SWITCH
-═══════════════════════════════════════ */
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-  document.getElementById(id).classList.add('active');
+/* ============================================================
+   NAVIGASI — pakai style.display langsung, paling aman di WebView
+============================================================ */
+function goPg(name){
+  // sembunyikan semua
+  document.getElementById('pgLogin').style.display='none';
+  document.getElementById('pgTeam').style.display='none';
+  document.getElementById('pgTable').style.display='none';
+
+  if(name==='login'){
+    document.getElementById('pgLogin').style.cssText='display:flex;justify-content:center;align-items:center;';
+  } else if(name==='team'){
+    document.getElementById('pgTeam').style.display='block';
+  } else if(name==='table'){
+    document.getElementById('pgTable').style.display='block';
+  }
+  window.scrollTo(0,0);
 }
 
-/* ═══════════════════════════════════════
+/* ============================================================
    LOGIN
-═══════════════════════════════════════ */
-function doLogin() {
-  var p = document.getElementById('passInput').value.trim();
-  if (!p) { showToast('⚠️ Masukkan password!'); return; }
+============================================================ */
+function doLogin(){
+  var p=document.getElementById('pInput').value.trim();
+  if(!p){toast('⚠️ Masukkan password!');return;}
+  if(PASS.indexOf(p)===-1){toast('❌ Password salah!');return;}
 
-  if (PASS.indexOf(p) === -1) {
-    showToast('❌ Password salah!');
-    return;
+  // Simpan auth (tidak blokir jika gagal)
+  try{sSet('ff_auth','1');}catch(e){}
+
+  // Load data & navigasi LANGSUNG
+  var saved=sGet('ff_teams');
+  teams=saved||[];
+
+  if(teams.length>=2){
+    goPg('table');
+    renderTable();
+  } else {
+    goPg('team');
+    renderSlots();
   }
-
-  // Cek device lock (opsional — skip jika stor gagal)
-  var dev = stor_get('ff_device');
-  if (dev && dev !== p) {
-    showToast('⚠️ Password sudah dipakai di HP lain!');
-    return;
-  }
-
-  // Simpan sesi
-  stor_set('ff_device', p);
-  stor_set('ff_auth', '1');
-  isLoggedIn = true;
-
-  showToast('✅ Login berhasil!', '#44ff44');
-
-  setTimeout(function(){
-    loadTeams();
-    if (teams.length >= 2) showTablePage();
-    else showTeamPage();
-  }, 500);
 }
 
-function doLogout() {
-  stor_del('ff_auth');
-  isLoggedIn = false;
-  teams = [];
-  showPage('loginPage');
-  document.getElementById('passInput').value = '';
+function doLogout(){
+  sDel('ff_auth');
+  teams=[];sc=0;
+  document.getElementById('pInput').value='';
+  goPg('login');
 }
 
-function reqAdmin() {
+function reqAdmin(){
   window.open('https://wa.me/6281234567890?text=Request%20akses%20admin%20Hitung%20Poin%20By%20Isall');
 }
 
-/* ═══════════════════════════════════════
-   LOAD & SAVE
-═══════════════════════════════════════ */
-function loadTeams() {
-  var d = stor_get('ff_teams');
-  teams = d || [];
-}
-function saveTeamsData() {
-  stor_set('ff_teams', teams);
-}
-
-/* ═══════════════════════════════════════
+/* ============================================================
    TEAM SLOTS
-═══════════════════════════════════════ */
-function showTeamPage() {
-  showPage('teamPage');
-  renderSlots();
-}
-
-function renderSlots() {
-  var list = document.getElementById('slotList');
-  list.innerHTML = '';
-  slotCount = 0;
-  if (teams.length === 0) {
-    addSlot(); // mulai 1 slot kosong
+============================================================ */
+function renderSlots(){
+  var list=document.getElementById('slotList');
+  list.innerHTML='';
+  sc=0;
+  if(teams.length===0){
+    buildSlot('');
+    buildSlot('');
   } else {
-    teams.forEach(function(t, i){ addSlotEl(i, t.name); });
+    for(var i=0;i<teams.length;i++) buildSlot(teams[i].name);
   }
-  refreshCount();
+  updCnt();
 }
 
-function addSlot() {
-  if (slotCount >= 12) { showToast('Maksimal 12 team!'); return; }
-  addSlotEl(slotCount, '');
-  refreshCount();
-}
-
-function addSlotEl(idx, val) {
-  var list = document.getElementById('slotList');
-  var d = document.createElement('div');
-  d.className = 'slot' + (val ? ' filled' : '');
-  d.id = 'sl_' + slotCount;
-  d.innerHTML =
-    '<div class="slot-no">' + (slotCount+1) + '</div>' +
-    '<input class="slot-inp" type="text" placeholder="Nama team ' + (slotCount+1) + '" value="' + esc(val) + '" ' +
-      'oninput="onInp(this)">' +
-    '<button class="slot-del" onclick="delSlot(this)">✕</button>';
+function buildSlot(val){
+  var n=sc;
+  var list=document.getElementById('slotList');
+  var d=document.createElement('div');
+  d.className='slot'+(val?' filled':'');
+  d.id='sl'+n;
+  d.innerHTML=
+    '<div class="snum">'+(n+1)+'</div>'+
+    '<input class="sinp" type="text" placeholder="Nama team '+(n+1)+'" value="'+eH(val)+'" oninput="onSI(this)">'+
+    '<button class="sdel" onclick="delSlot(this)">✕</button>';
   list.appendChild(d);
-  slotCount++;
-  document.getElementById('addBtn').style.display = slotCount >= 12 ? 'none' : 'flex';
+  sc++;
+  document.getElementById('addBtn').style.display=sc>=12?'none':'flex';
 }
 
-function onInp(el) {
-  var slot = el.closest('.slot');
-  if (slot) slot.classList.toggle('filled', el.value.trim() !== '');
+function addSlot(){
+  if(sc>=12){toast('Maksimal 12 team!');return;}
+  buildSlot('');
+  updCnt();
 }
 
-function delSlot(btn) {
-  var slot = btn.closest('.slot');
-  if (slot) slot.remove();
-  reIndex();
+function onSI(el){
+  var s=el.closest?el.closest('.slot'):el.parentNode;
+  if(s) s.className='slot'+(el.value.trim()?' filled':'');
 }
 
-function reIndex() {
-  var slots = document.querySelectorAll('.slot');
-  slotCount = slots.length;
-  slots.forEach(function(s, i){
-    s.id = 'sl_' + i;
-    s.querySelector('.slot-no').textContent = i+1;
-    var inp = s.querySelector('.slot-inp');
-    inp.placeholder = 'Nama team ' + (i+1);
-  });
-  refreshCount();
-  document.getElementById('addBtn').style.display = slotCount >= 12 ? 'none' : 'flex';
+function delSlot(btn){
+  var s=btn.parentNode;
+  if(s) s.parentNode.removeChild(s);
+  reIdx();
 }
 
-function refreshCount() {
-  document.getElementById('cntVal').textContent = slotCount + ' / 12';
+function reIdx(){
+  var all=document.querySelectorAll('.slot');
+  sc=all.length;
+  for(var i=0;i<all.length;i++){
+    all[i].id='sl'+i;
+    all[i].querySelector('.snum').textContent=i+1;
+    all[i].querySelector('.sinp').placeholder='Nama team '+(i+1);
+  }
+  updCnt();
+  document.getElementById('addBtn').style.display=sc>=12?'none':'flex';
 }
 
-function saveTeams() {
-  var slots = document.querySelectorAll('.slot');
-  var names = [];
-  slots.forEach(function(s){
-    var v = s.querySelector('.slot-inp').value.trim();
-    if (v) names.push(v);
-  });
-  if (names.length < 2) { showToast('⚠️ Minimal 2 team!'); return; }
-
-  var old = teams.slice();
-  teams = names.map(function(name){
-    var prev = null;
-    for (var i=0;i<old.length;i++){ if(old[i].name===name){prev=old[i];break;} }
-    return prev || { name:name, k1:0,r1:1,k2:0,r2:1,k3:0,r3:1 };
-  });
-  saveTeamsData();
-  showToast('✅ Tersimpan!', '#44ff44');
-  setTimeout(showTablePage, 500);
+function updCnt(){
+  document.getElementById('cntVal').textContent=sc+' / 12';
 }
 
-function goEditTeam() { showTeamPage(); }
+function saveTeams(){
+  var all=document.querySelectorAll('.slot');
+  var names=[];
+  for(var i=0;i<all.length;i++){
+    var v=all[i].querySelector('.sinp').value.trim();
+    if(v) names.push(v);
+  }
+  if(names.length<2){toast('⚠️ Minimal 2 team!');return;}
 
-/* ═══════════════════════════════════════
-   TABLE
-═══════════════════════════════════════ */
-function calcT(t) {
-  var m1 = t.k1*KILL_X + rankPt(t.r1);
-  var m2 = t.k2*KILL_X + rankPt(t.r2);
-  var m3 = t.k3*KILL_X + rankPt(t.r3);
-  return { m1:m1, m2:m2, m3:m3, tot:m1+m2+m3 };
-}
-
-function showTablePage() {
-  showPage('tablePage');
+  var oldT=teams.slice();
+  teams=[];
+  for(var j=0;j<names.length;j++){
+    var nm=names[j];
+    var prev=null;
+    for(var k=0;k<oldT.length;k++){if(oldT[k].name===nm){prev=oldT[k];break;}}
+    teams.push(prev||{name:nm,k1:0,r1:1,k2:0,r2:1,k3:0,r3:1});
+  }
+  sSet('ff_teams',teams);
+  toast('✅ Team tersimpan!','#44ff44');
+  goPg('table');
   renderTable();
 }
 
-function renderTable() {
-  var sorted = teams.map(function(t,i){
-    var c = calcT(t);
-    return { idx:i, name:t.name, k1:t.k1,r1:t.r1, k2:t.k2,r2:t.r2, k3:t.k3,r3:t.r3,
-             m1:c.m1, m2:c.m2, m3:c.m3, tot:c.tot };
-  });
-  sorted.sort(function(a,b){ return b.tot - a.tot; });
+function gotoTeam(){
+  goPg('team');
+  renderSlots();
+}
 
-  var tbody = document.getElementById('tBody');
-  tbody.innerHTML = '';
+/* ============================================================
+   TABLE
+============================================================ */
+function calc(t){
+  var m1=t.k1*KX+rp(t.r1);
+  var m2=t.k2*KX+rp(t.r2);
+  var m3=t.k3*KX+rp(t.r3);
+  return{m1:m1,m2:m2,m3:m3,tot:m1+m2+m3};
+}
 
-  sorted.forEach(function(t, rank){
-    var rc = rank===0?'r1': rank===1?'r2': rank===2?'r3':'';
-    var med = rank===0?'🥇': rank===1?'🥈': rank===2?'🥉': (rank+1);
-    var i = t.idx;
+function renderTable(){
+  // Buat salinan + hitung poin
+  var list=[];
+  for(var i=0;i<teams.length;i++){
+    var c=calc(teams[i]);
+    list.push({
+      i:i,name:teams[i].name,
+      k1:teams[i].k1,r1:teams[i].r1,
+      k2:teams[i].k2,r2:teams[i].r2,
+      k3:teams[i].k3,r3:teams[i].r3,
+      m1:c.m1,m2:c.m2,m3:c.m3,tot:c.tot
+    });
+  }
+  list.sort(function(a,b){return b.tot-a.tot;});
 
-    var tr = document.createElement('tr');
-    tr.className = rc;
-    tr.innerHTML =
-      '<td>' + med + '</td>' +
-      '<td style="text-align:left;font-weight:700;white-space:nowrap">' + esc(t.name) + '</td>' +
-      '<td contenteditable oninput="upd(' + i + ',\'k1\',this)">' + t.k1 + '</td>' +
-      '<td contenteditable oninput="upd(' + i + ',\'r1\',this)">' + t.r1 + '</td>' +
-      '<td class="td-t">' + t.m1 + '</td>' +
-      '<td contenteditable oninput="upd(' + i + ',\'k2\',this)">' + t.k2 + '</td>' +
-      '<td contenteditable oninput="upd(' + i + ',\'r2
+  var tbody=document.getElementById('tBody');
+  tbody.innerHTML='';
+
+  for(var r=0;r<list.length;r++){
+    var t=list[r];
+    var rc=r===0?'rg1':r===1?'rg2':r===2?'rg3':'';
+    var med=r===0?'🥇':r===1?'🥈':r===2?'🥉':(r+1);
+    var oi=t.i;
+
+    var tr=document.createElement('tr');
+    tr.className=rc;
+    tr.innerHTML=
+      '<td>'+med+'</td>'+
+      '<td style="text-align:left;font-weight:700;white-space:nowrap">'+eH(t.name)+'</td>'+
+      '<td contenteditable oninput="upd('+oi+',\'k1\',this)">'+t.k1+'</td>'+
+      '<td contenteditable oninput="upd('+oi+',\'r1\',this)">'+t.r1+'</td>'+
+      '<td class="tt">'+t.m1+'</td>'+
+      '<td contenteditable oninput="upd('+oi+',\'k2\',this)">'+t.k2+'</td>'+
+      '<td contenteditable oninput="upd('+oi+',\'r2\',this)">'+t.r2+'</td>'+
+      '<td class="tt">'+t.m2+'</td>'+
+      '<td contenteditable oninput="upd('+oi+',\'k3\',this)">'+t.k3+'<
