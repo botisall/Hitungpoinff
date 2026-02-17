@@ -1,236 +1,344 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>HITUNG POIN BY ISALL</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hitung Poin By Isall</title>
 
 <style>
 body{
-margin:0;
-font-family: 'Segoe UI', sans-serif;
-background: linear-gradient(135deg,#0f172a,#1e293b);
-color:white;
+  margin:0;
+  font-family:Arial;
+  background:linear-gradient(135deg,#0f0f0f,#1c1c1c);
+  color:white;
 }
 
-/* HEADER */
-.header{
-text-align:center;
-padding:20px;
-font-size:22px;
-font-weight:bold;
-letter-spacing:1px;
-background:linear-gradient(90deg,#22c55e,#16a34a);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
+/* PAGE */
+.page{
+  display:none;
+  min-height:100vh;
+  padding:20px;
 }
 
-/* CARD */
-.card{
-background:#1e293b;
-margin:15px;
-padding:15px;
-border-radius:15px;
-box-shadow:0 0 15px rgba(0,0,0,0.5);
+.active{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
 }
 
-/* TEAM INPUT GRID */
-.team-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:10px;
+/* LOGIN */
+.loginBox{
+  width:90%;
+  max-width:350px;
+  background:#1e1e1e;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 0 40px rgba(255,0,0,0.5);
+}
+
+.loginBox h2{
+  color:#ff2e2e;
+  margin-bottom:25px;
+}
+
+/* CONTENT */
+.content{
+  width:100%;
+  max-width:1200px;
+  text-align:center;
+}
+
+/* INPUT + BUTTON */
+input,button{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border:none;
+  border-radius:8px;
 }
 
 input{
-width:100%;
-padding:10px;
-border-radius:8px;
-border:none;
-background:#0f172a;
-color:white;
-text-align:center;
-}
-
-/* TABLE */
-.table-wrapper{
-overflow:auto;
-margin-top:15px;
-}
-
-table{
-border-collapse:collapse;
-min-width:900px;
-width:100%;
-}
-
-th{
-background:#111827;
-padding:10px;
-}
-
-td{
-padding:8px;
-text-align:center;
-}
-
-th,td{
-border:1px solid #334155;
-}
-
-.gold{background:#FFD700;color:black;font-weight:bold;}
-.silver{background:#C0C0C0;color:black;font-weight:bold;}
-.bronze{background:#CD7F32;color:black;font-weight:bold;}
-
-/* FIXED BUTTON BAR */
-.button-bar{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-display:flex;
-justify-content:space-around;
-background:#111827;
-padding:10px;
-box-shadow:0 -2px 10px rgba(0,0,0,0.5);
+  background:#2a2a2a;
+  color:white;
+  text-align:center;
 }
 
 button{
-flex:1;
-margin:5px;
-padding:12px;
-border-radius:10px;
-border:none;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-
-.btn-green{
-background:linear-gradient(45deg,#22c55e,#16a34a);
-color:white;
-}
-
-.btn-blue{
-background:linear-gradient(45deg,#3b82f6,#2563eb);
-color:white;
-}
-
-.btn-red{
-background:linear-gradient(45deg,#ef4444,#dc2626);
-color:white;
+  background:#ff2e2e;
+  color:white;
+  font-weight:bold;
 }
 
 button:hover{
-transform:scale(1.05);
+  background:#cc0000;
 }
+
+/* TABLE */
+.tableWrap{
+  overflow:auto;
+  background:white;
+  border-radius:10px;
+  padding:10px;
+  margin-top:15px;
+}
+
+table{
+  border-collapse:collapse;
+  min-width:1100px;
+  width:100%;
+  color:black;
+}
+
+th,td{
+  border:1px solid #ccc;
+  padding:10px;
+  text-align:center;
+}
+
+th{
+  background:#f2f2f2;
+  position:sticky;
+  top:0;
+}
+
+td[contenteditable]{
+  background:#fafafa;
+}
+
+.rank1{background:gold !important;}
+.rank2{background:silver !important;}
+.rank3{background:#cd7f32 !important;}
 
 </style>
 </head>
-
 <body>
 
-<div class="header">HITUNG POIN BY ISALL</div>
-
-<div class="card">
-<h3>INPUT TEAM (12)</h3>
-<div class="team-grid" id="teamInput"></div>
-<br>
-<button class="btn-green" onclick="saveTeams()">Simpan Team</button>
+<!-- LOGIN -->
+<div id="loginPage" class="page active">
+<div class="loginBox">
+<h2>HITUNG POIN BY ISALL</h2>
+<input type="password" id="pass" placeholder="Masukkan Password">
+<button onclick="login()">Login</button>
+<button onclick="requestAdmin()">Request Admin</button>
+</div>
 </div>
 
-<div class="card table-wrapper">
-<table id="table">
+<!-- TEAM INPUT -->
+<div id="teamPage" class="page">
+<div class="content">
+<h2>Masukkan 12 Team</h2>
+<div id="teamInputs"></div>
+<button onclick="saveTeams()">Simpan Team</button>
+<button onclick="logout()">Logout</button>
+</div>
+</div>
+
+<!-- TABLE -->
+<div id="tablePage" class="page">
+<div class="content">
+<h2>Leaderboard Spreadsheet</h2>
+<button onclick="resetAll()">Reset Semua</button>
+<button onclick="logout()">Logout</button>
+<button onclick="downloadPDF()">Download PDF</button>
+
+<div class="tableWrap">
+<table id="tabel">
 <thead>
 <tr>
+<th>No</th>
 <th>Team</th>
-<th>M1 Kill</th><th>M1 Rank</th>
-<th>M2 Kill</th><th>M2 Rank</th>
-<th>M3 Kill</th><th>M3 Rank</th>
-<th>Total</th>
+<th>M1 Kill</th><th>M1 Rank</th><th>M1 Total</th>
+<th>M2 Kill</th><th>M2 Rank</th><th>M2 Total</th>
+<th>M3 Kill</th><th>M3 Rank</th><th>M3 Total</th>
+<th>Grand Total</th>
 </tr>
 </thead>
 <tbody></tbody>
 </table>
 </div>
-
-<div style="height:90px;"></div>
-
-<div class="button-bar">
-<button class="btn-green" onclick="calculate()">Hitung</button>
-<button class="btn-blue" onclick="window.print()">Save PDF</button>
-<button class="btn-red" onclick="resetAll()">Reset</button>
+</div>
 </div>
 
 <script>
 
-function init(){
-let container=document.getElementById("teamInput");
+let passwords=["adminA1","adminB2","adminC3","adminD4","adminE5"];
+let teams=JSON.parse(localStorage.getItem("teams"))||[];
+
+/* LOGIN */
+function login(){
+let p=pass.value;
+let device=localStorage.getItem("devicePass");
+
+if(passwords.includes(p)){
+if(!device){
+localStorage.setItem("devicePass",p);
+localStorage.setItem("admin","yes");
+nextPage();
+}
+else if(device===p){
+localStorage.setItem("admin","yes");
+nextPage();
+}
+else{
+alert("Password sudah dipakai di HP lain!");
+}
+}else{
+alert("Password salah!");
+}
+}
+
+function logout(){
+localStorage.removeItem("admin");
+location.reload();
+}
+
+function requestAdmin(){
+window.open("https://wa.me/6281234567890?text=Saya%20ingin%20jadi%20admin");
+}
+
+/* NAVIGATION */
+function nextPage(){
+loginPage.classList.remove("active");
+if(teams.length==12){
+showTable();
+}else{
+teamPage.classList.add("active");
+createInputs();
+}
+}
+
+function showTable(){
+teamPage.classList.remove("active");
+tablePage.classList.add("active");
+renderTable();
+}
+
+/* TEAM INPUT */
+function createInputs(){
+let html="";
 for(let i=1;i<=12;i++){
-container.innerHTML+=`<input placeholder="Team ${i}" id="team${i}">`;
+html+=`<input type="text" placeholder="Nama Team ${i}" id="team${i}"><br>`;
 }
+teamInputs.innerHTML=html;
 }
-init();
 
 function saveTeams(){
-let tbody=document.querySelector("#table tbody");
-tbody.innerHTML="";
+teams=[];
 for(let i=1;i<=12;i++){
-let name=document.getElementById("team"+i).value||("Team "+i);
-tbody.innerHTML+=`
-<tr>
-<td>${name}</td>
-<td><input type="number" value="0"></td>
-<td><input type="number" value="0"></td>
-<td><input type="number" value="0"></td>
-<td><input type="number" value="0"></td>
-<td><input type="number" value="0"></td>
-<td><input type="number" value="0"></td>
-<td class="total">0</td>
-</tr>`;
+let name=document.getElementById("team"+i).value;
+if(!name)return alert("Semua team harus diisi!");
+teams.push({name,k1:0,r1:0,k2:0,r2:0,k3:0,r3:0});
 }
+localStorage.setItem("teams",JSON.stringify(teams));
+showTable();
 }
 
+/* POINT SYSTEM */
 function rankPoint(r){
-if(r==1)return 12;
-if(r==2)return 9;
-if(r==3)return 8;
-if(r==4)return 7;
-if(r==5)return 6;
-if(r==6)return 5;
-if(r==7)return 4;
-if(r==8)return 3;
-if(r==9)return 2;
-if(r==10)return 1;
-return 0;
+switch(parseInt(r)){
+case 1:return 12;
+case 2:return 9;
+case 3:return 8;
+case 4:return 7;
+case 5:return 6;
+case 6:return 5;
+case 7:return 4;
+case 8:return 3;
+case 9:return 2;
+case 10:return 1;
+default:return 0;
+}
 }
 
-function calculate(){
-let rows=document.querySelectorAll("#table tbody tr");
-let totals=[];
-rows.forEach(row=>{
-let inputs=row.querySelectorAll("input");
-let total=0;
-for(let i=0;i<6;i+=2){
-let kill=parseInt(inputs[i].value)||0;
-let rank=parseInt(inputs[i+1].value)||0;
-total+=kill+rankPoint(rank);
-}
-row.querySelector(".total").innerText=total;
-totals.push(total);
-row.className="";
-});
-totals.sort((a,b)=>b-a);
+function renderTable(){
 
-rows.forEach(row=>{
-let t=parseInt(row.querySelector(".total").innerText);
-if(t===totals[0])row.classList.add("gold");
-else if(t===totals[1])row.classList.add("silver");
-else if(t===totals[2])row.classList.add("bronze");
+teams.sort((a,b)=>{
+let ta=(a.k1+rankPoint(a.r1))+(a.k2+rankPoint(a.r2))+(a.k3+rankPoint(a.r3));
+let tb=(b.k1+rankPoint(b.r1))+(b.k2+rankPoint(b.r2))+(b.k3+rankPoint(b.r3));
+return tb-ta;
 });
+
+let tbody="";
+
+teams.forEach((t,i)=>{
+
+let m1=t.k1+rankPoint(t.r1);
+let m2=t.k2+rankPoint(t.r2);
+let m3=t.k3+rankPoint(t.r3);
+let total=m1+m2+m3;
+
+let rankClass="";
+if(i==0)rankClass="rank1";
+if(i==1)rankClass="rank2";
+if(i==2)rankClass="rank3";
+
+tbody+=`
+<tr class="${rankClass}">
+<td>${i+1}</td>
+<td>${t.name}</td>
+<td contenteditable oninput="update(${i},'k1',this.innerText)">${t.k1}</td>
+<td contenteditable oninput="update(${i},'r1',this.innerText)">${t.r1}</td>
+<td>${m1}</td>
+<td contenteditable oninput="update(${i},'k2',this.innerText)">${t.k2}</td>
+<td contenteditable oninput="update(${i},'r2',this.innerText)">${t.r2}</td>
+<td>${m2}</td>
+<td contenteditable oninput="update(${i},'k3',this.innerText)">${t.k3}</td>
+<td contenteditable oninput="update(${i},'r3',this.innerText)">${t.r3}</td>
+<td>${m3}</td>
+<td>${total}</td>
+</tr>
+`;
+});
+
+tabel.querySelector("tbody").innerHTML=tbody;
+localStorage.setItem("teams",JSON.stringify(teams));
+}
+
+function update(i,key,value){
+teams[i][key]=parseInt(value)||0;
+renderTable();
+}
+
+/* DOWNLOAD PDF TANPA LIBRARY */
+function downloadPDF(){
+
+let htmlContent = `
+<html>
+<head>
+<style>
+body{font-family:Arial;text-align:center;}
+table{border-collapse:collapse;width:100%;}
+th,td{border:1px solid #000;padding:6px;text-align:center;}
+th{background:#eee;}
+.rank1{background:gold;}
+.rank2{background:silver;}
+.rank3{background:#cd7f32;}
+</style>
+</head>
+<body>
+<h2>HITUNG POIN BY ISALL</h2>
+${document.getElementById("tabel").outerHTML}
+</body>
+</html>
+`;
+
+let blob=new Blob([htmlContent],{type:"application/pdf"});
+let a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="Leaderboard.pdf";
+a.click();
 }
 
 function resetAll(){
+if(confirm("Reset semua data?")){
+localStorage.removeItem("teams");
 location.reload();
+}
+}
+
+if(localStorage.getItem("admin")=="yes"){
+nextPage();
 }
 
 </script>
