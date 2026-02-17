@@ -3,77 +3,142 @@
 <head>
 <meta charset="UTF-8">
 <title>HITUNG POIN BY ISALL</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body{
-font-family:Arial;
-background:#0f172a;
-color:white;
 margin:0;
+font-family: 'Segoe UI', sans-serif;
+background: linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
 }
 
-.center{
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-flex-direction:column;
+/* HEADER */
+.header{
+text-align:center;
+padding:20px;
+font-size:22px;
+font-weight:bold;
+letter-spacing:1px;
+background:linear-gradient(90deg,#22c55e,#16a34a);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 }
 
-input,button{
+/* CARD */
+.card{
+background:#1e293b;
+margin:15px;
+padding:15px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+
+/* TEAM INPUT GRID */
+.team-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px;
+}
+
+input{
+width:100%;
 padding:10px;
-margin:5px;
 border-radius:8px;
 border:none;
+background:#0f172a;
+color:white;
+text-align:center;
 }
 
-button{
-background:#22c55e;
-color:white;
-cursor:pointer;
+/* TABLE */
+.table-wrapper{
+overflow:auto;
+margin-top:15px;
 }
 
 table{
 border-collapse:collapse;
-min-width:1000px;
+min-width:900px;
+width:100%;
 }
 
-th,td{
-border:1px solid #444;
+th{
+background:#111827;
+padding:10px;
+}
+
+td{
 padding:8px;
 text-align:center;
 }
 
-th{
-background:#1e293b;
+th,td{
+border:1px solid #334155;
 }
 
-.gold{background:#FFD700;color:black;}
-.silver{background:#C0C0C0;color:black;}
-.bronze{background:#CD7F32;color:black;}
+.gold{background:#FFD700;color:black;font-weight:bold;}
+.silver{background:#C0C0C0;color:black;font-weight:bold;}
+.bronze{background:#CD7F32;color:black;font-weight:bold;}
 
-.scroll{
-overflow:auto;
-height:80vh;
+/* FIXED BUTTON BAR */
+.button-bar{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+display:flex;
+justify-content:space-around;
+background:#111827;
+padding:10px;
+box-shadow:0 -2px 10px rgba(0,0,0,0.5);
+}
+
+button{
+flex:1;
+margin:5px;
+padding:12px;
+border-radius:10px;
+border:none;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.btn-green{
+background:linear-gradient(45deg,#22c55e,#16a34a);
+color:white;
+}
+
+.btn-blue{
+background:linear-gradient(45deg,#3b82f6,#2563eb);
+color:white;
+}
+
+.btn-red{
+background:linear-gradient(45deg,#ef4444,#dc2626);
+color:white;
+}
+
+button:hover{
+transform:scale(1.05);
 }
 
 </style>
 </head>
+
 <body>
 
-<div id="login" class="center">
-<h1>HITUNG POIN BY ISALL</h1>
-<input type="password" id="pass" placeholder="Masukkan Password">
-<button onclick="login()">LOGIN</button>
+<div class="header">HITUNG POIN BY ISALL</div>
+
+<div class="card">
+<h3>INPUT TEAM (12)</h3>
+<div class="team-grid" id="teamInput"></div>
+<br>
+<button class="btn-green" onclick="saveTeams()">Simpan Team</button>
 </div>
 
-<div id="app" style="display:none;padding:20px;">
-<h2>INPUT TEAM (12)</h2>
-<div id="teamInput"></div>
-<button onclick="saveTeams()">Simpan Team</button>
-
-<hr>
-
-<div class="scroll">
+<div class="card table-wrapper">
 <table id="table">
 <thead>
 <tr>
@@ -88,40 +153,15 @@ height:80vh;
 </table>
 </div>
 
-<br>
-<button onclick="calculate()">Hitung</button>
-<button onclick="window.print()">Print / Save PDF</button>
-<button onclick="resetAll()">Reset</button>
+<div style="height:90px;"></div>
 
+<div class="button-bar">
+<button class="btn-green" onclick="calculate()">Hitung</button>
+<button class="btn-blue" onclick="window.print()">Save PDF</button>
+<button class="btn-red" onclick="resetAll()">Reset</button>
 </div>
 
 <script>
-
-let passwords=["adminA1","adminB2","adminC3","adminD4","adminE5"];
-
-function login(){
-let input=document.getElementById("pass").value;
-let saved=localStorage.getItem("devicePass");
-
-if(passwords.includes(input)){
-    if(!saved){
-        localStorage.setItem("devicePass",input);
-        showApp();
-    }else if(saved===input){
-        showApp();
-    }else{
-        alert("Password sudah dipakai di device ini!");
-    }
-}else{
-    alert("Password salah!");
-}
-}
-
-function showApp(){
-document.getElementById("login").style.display="none";
-document.getElementById("app").style.display="block";
-init();
-}
 
 function init(){
 let container=document.getElementById("teamInput");
@@ -129,6 +169,7 @@ for(let i=1;i<=12;i++){
 container.innerHTML+=`<input placeholder="Team ${i}" id="team${i}">`;
 }
 }
+init();
 
 function saveTeams(){
 let tbody=document.querySelector("#table tbody");
@@ -150,7 +191,6 @@ tbody.innerHTML+=`
 }
 
 function rankPoint(r){
-r=parseInt(r);
 if(r==1)return 12;
 if(r==2)return 9;
 if(r==3)return 8;
@@ -190,10 +230,10 @@ else if(t===totals[2])row.classList.add("bronze");
 }
 
 function resetAll(){
-localStorage.clear();
 location.reload();
 }
 
 </script>
+
 </body>
 </html>
