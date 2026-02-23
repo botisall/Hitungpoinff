@@ -590,13 +590,13 @@ td[contenteditable]:focus{
             <th style="text-align:left">Team</th>
             <th class="match-header">M1 Kill</th>
             <th class="match-header">M1 Rank</th>
-            <th class="match-header">M1 Pts</th>
+            <th class="match-header">M1 Total</th>
             <th class="match-header">M2 Kill</th>
             <th class="match-header">M2 Rank</th>
-            <th class="match-header">M2 Pts</th>
+            <th class="match-header">M2 Total</th>
             <th class="match-header">M3 Kill</th>
             <th class="match-header">M3 Rank</th>
-            <th class="match-header">M3 Pts</th>
+            <th class="match-header">M3 Total</th>
             <th>Grand Total</th>
           </tr>
         </thead>
@@ -609,7 +609,7 @@ td[contenteditable]:focus{
 <div class="toast" id="toast"></div>
 
 <script>
-const PASSWORDS = ["adminA1","adminB2","adminC3","adminD4","adminE5"];
+const PASSWORDS = ["admin","adminB2","adminC3","adminD4","adminE5"];
 let teams = JSON.parse(localStorage.getItem("teams")) || [];
 
 /* ── UTILS ── */
@@ -648,7 +648,7 @@ function logout(){
 }
 
 function requestAdmin(){
-  window.open("https://wa.me/6281234567890?text=Saya%20ingin%20jadi%20admin");
+  window.open("https://wa.me/6287895929600?text=Saya%20ingin%20Minta%20Paswoord");
 }
 
 /* ── NAVIGATION ── */
@@ -776,7 +776,7 @@ function downloadPDF(){
   doc.setFont("helvetica","bold");
   doc.setFontSize(16);
   doc.setTextColor(200,30,30);
-  doc.text("HITUNG POIN — BY ISALL", 148.5, 18, {align:"center"});
+  doc.text("HITUNG POIN FT — BY KAWAN-DUDA", 148.5, 18, {align:"center"});
 
   doc.setFontSize(8);
   doc.setTextColor(120,120,120);
@@ -841,7 +841,7 @@ function downloadPDF(){
   const finalY = doc.lastAutoTable.finalY + 6;
   doc.setFontSize(7.5);
   doc.setTextColor(150,150,150);
-  doc.text("Sistem Poin: Kill = 1pt per kill | Rank 1=12pt, 2=9pt, 3=8pt, 4=7pt, 5=6pt, 6=5pt, 7=4pt, 8=3pt, 9=2pt, 10=1pt", 148.5, finalY, {align:"center"});
+  doc.text("Sistem Poin: Kill = 1 POIN per kill | Rank 1=12 POIN, 2= 9 POIN, 3= 8 POIN, 4= 7 POIN, 5= 6 POIN, 6= 5 POIN, 7= 4 POIN, 8= 3 POIN, 9= 2 POIN, 10= 1 POIN", 148.5, finalY, {align:"center"});
 
   doc.save(`Hitung_Poin_${now.toISOString().slice(0,10)}.pdf`);
   showToast("✅ PDF berhasil diunduh!");
